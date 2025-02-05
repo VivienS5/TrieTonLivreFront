@@ -1,43 +1,39 @@
 <template>
-  <div class="p-4 flex flex-col lg:flex-row lg:items-start lg:justify-center lg:gap-8">
+<div class="p-4 flex flex-col lg:flex-row">
     <!-- Partie Infos du Livre -->
     <div v-if="book" class="lg:w-1/3 flex flex-col items-center lg:items-start">
       <img class="w-40 h-56 object-cover rounded shadow-lg" :src="book.image" alt="Book Cover" />
       <h2 class="text-2xl font-bold mt-4 text-center lg:text-left">{{ book.title }}</h2>
       <h3 class="text-lg text-gray-700">{{ book.author }}</h3>
     </div>
-<div class="flex-col">
-  <div>
-    <!-- Affichage du PDF -->
-    <div v-if="book && pdf" class="">
-      <h3 class="text-lg font-bold text-center lg:text-left mb-4">Lecture du PDF</h3>
-      <div class="border p-2 rounded shadow-lg bg-white">
-        <!-- Affichage d'une seule page à la fois -->
-        <VuePDF :pdf="pdf" :page="currentPage" class="w-full max-h-[500px] object-contain" />
+  <div class="w-1/3">
+    <div>
+      <!-- Affichage du PDF -->
+      <div v-if="book && pdf" class="">
+        <div class="border p-2 rounded shadow-lg bg-white">
+          <!-- Affichage d'une seule page à la fois -->
+          <VuePDF :pdf="pdf" :page="currentPage" class="w-full max-h-[500px] object-contain" />
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-row">
+      <!-- Pagination Gauche -->
+      <div class="p-4 flex justify-start items-center w-full lg:w-1/3">
+        <button @click="prevPage" :disabled="currentPage === 1" class="text-gray-700 font-bold px-3 py-1 bg-gray-200 rounded disabled:opacity-50">
+          ◀
+        </button>
+      </div>
+      <span class="font-bold p-4 flex justify-center items-center w-full lg:w-1/3">{{ currentPage }} / {{ totalPages }}</span>
+      <div class="p-4 flex justify-end items-center w-full lg:w-1/3">
+      <!-- Pagination Droite -->
+        <button @click="nextPage" :disabled="currentPage === totalPages" class="text-gray-700 font-bold px-3 py-1 bg-gray-200 rounded disabled:opacity-50">
+          ▶
+        </button>
       </div>
     </div>
   </div>
-
-  <div class="flex flex-row">
-    <!-- Pagination Gauche -->
-    <div class="p-4 flex justify-start items-center w-full lg:w-1/3">
-      <button @click="prevPage" :disabled="currentPage === 1" class="text-gray-700 font-bold px-3 py-1 bg-gray-200 rounded disabled:opacity-50">
-        ◀
-      </button>
-    </div>
-    <span class="font-bold p-4 flex justify-center items-center w-full lg:w-1/3">{{ currentPage }} / {{ totalPages }}</span>
-    <div class="p-4 flex justify-end items-center w-full lg:w-1/3">
-    <!-- Pagination Droite -->
-      <button @click="nextPage" :disabled="currentPage === totalPages" class="text-gray-700 font-bold px-3 py-1 bg-gray-200 rounded disabled:opacity-50">
-        ▶
-      </button>
-    </div>
-  </div>
 </div>
-
-
-
-  </div>
 </template>
 
 <script setup>
