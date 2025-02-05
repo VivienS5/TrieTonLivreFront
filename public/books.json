@@ -1,0 +1,31 @@
+[
+    {
+      "id": 1,
+      "image": "https://m.media-amazon.com/images/I/41dzKqH6nAL._SY445_SX342_.jpg",
+      "title": "SOUL",
+      "author": "Olivia Wilson",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod..."
+    },
+    {
+      "id": 2,
+      "image": "https://m.media-amazon.com/images/I/41dzKqH6nAL._SY445_SX342_.jpg",
+      "title": "HORIZON",
+      "author": "James Smith",
+      "content": "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere..."
+    },
+    {
+      "id": 3,
+      "image": "https://m.media-amazon.com/images/I/41dzKqH6nAL._SY445_SX342_.jpg",
+      "title": "DREAMS",
+      "author": "Emma Johnson",
+      "content": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium..."
+    },
+    {
+      "id": 4,
+      "image": "https://m.media-amazon.com/images/I/41dzKqH6nAL._SY445_SX342_.jpg",
+      "title": "NIGHTFALL",
+      "author": "Liam Brown",
+      "content": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis..."
+    }
+]
+  

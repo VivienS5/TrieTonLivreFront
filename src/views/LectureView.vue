@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center justify-center p-4">
-    <div class="max-w-md overflow-hidden">
+    <div v-if="book" class="max-w-md overflow-hidden">
       <div class="p-4 flex flex-col items-center">
         <img class="w-32 h-40 object-cover rounded" :src="book.image" alt="Book Cover" />
         <h3 class="mt-2 text-lg font-semibold">{{ book.author }}</h3>
@@ -15,6 +15,7 @@
         <button @click="nextPage" class="text-gray-700 font-bold">▶</button>
       </div>
     </div>
+    <p v-else>Chargement...</p>
   </div>
 </template>
 
@@ -22,17 +23,23 @@
 export default {
   data() {
     return {
-      book: {
-        image: "https://m.media-amazon.com/images/I/41dzKqH6nAL._SY445_SX342_.jpg",
-        title: "SOUL",
-        author: "Olivia Wilson",
-        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod...",
-      },
-      currentPage: 2,
-      totalPages: 124,
+      books: [],
+      book: null,
+      currentPage: 1,
+      totalPages: 100
     };
   },
   methods: {
+    async fetchBooks() {
+      try {
+        const response = await fetch("/books.json");
+        this.books = await response.json();
+        const bookId = this.$route.params.id;
+        this.book = this.books.find(b => b.id == bookId);
+      } catch (error) {
+        console.error("Erreur de chargement des livres :", error);
+      }
+    },
     nextPage() {
       if (this.currentPage < this.totalPages) {
         this.currentPage++;
@@ -42,14 +49,10 @@ export default {
       if (this.currentPage > 1) {
         this.currentPage--;
       }
-    },
+    }
   },
+  mounted() {
+    this.fetchBooks();
+  }
 };
 </script>
-
-<style scoped>
-img {
-  max-width: 100%;
-  border-radius: 8px;
-}
-</style>
