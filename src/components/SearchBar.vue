@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center">
     <div class="max-w-lg w-full p-6 bg-white shadow-lg rounded-lg">
-      <form class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+      <form @submit.prevent="goToSearch" class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
         <input
           v-model="search"
           type="text"
@@ -18,15 +18,19 @@
   </div>
 </template>
 
-
 <script>
-
 export default {
-data() {
-  return {
-    books: []
-  };
-},
+  data() {
+    return {
+      search: "",
+    };
+  },
+  methods: {
+    goToSearch() {
+      if (this.search.trim()) {
+        this.$router.push({ name: "recherche", params: { search: this.search } });
+      }
+    },
+  },
 };
 </script>
-

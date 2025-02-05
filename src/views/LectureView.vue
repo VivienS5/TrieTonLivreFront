@@ -1,5 +1,47 @@
+<template>
+  <div class="p-4 flex flex-col lg:flex-row lg:items-start lg:justify-center lg:gap-8">
+    <!-- Partie Infos du Livre -->
+    <div v-if="book" class="lg:w-1/3 flex flex-col items-center lg:items-start">
+      <img class="w-40 h-56 object-cover rounded shadow-lg" :src="book.image" alt="Book Cover" />
+      <h2 class="text-2xl font-bold mt-4 text-center lg:text-left">{{ book.title }}</h2>
+      <h3 class="text-lg text-gray-700">{{ book.author }}</h3>
+    </div>
+<div class="flex-col">
+  <div>
+    <!-- Affichage du PDF -->
+    <div v-if="book && pdf" class="">
+      <h3 class="text-lg font-bold text-center lg:text-left mb-4">Lecture du PDF</h3>
+      <div class="border p-2 rounded shadow-lg bg-white">
+        <!-- Affichage d'une seule page à la fois -->
+        <VuePDF :pdf="pdf" :page="currentPage" class="w-full max-h-[500px] object-contain" />
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-row">
+    <!-- Pagination Gauche -->
+    <div class="p-4 flex justify-start items-center w-full lg:w-1/3">
+      <button @click="prevPage" :disabled="currentPage === 1" class="text-gray-700 font-bold px-3 py-1 bg-gray-200 rounded disabled:opacity-50">
+        ◀
+      </button>
+    </div>
+    <span class="font-bold p-4 flex justify-center items-center w-full lg:w-1/3">{{ currentPage }} / {{ totalPages }}</span>
+    <div class="p-4 flex justify-end items-center w-full lg:w-1/3">
+    <!-- Pagination Droite -->
+      <button @click="nextPage" :disabled="currentPage === totalPages" class="text-gray-700 font-bold px-3 py-1 bg-gray-200 rounded disabled:opacity-50">
+        ▶
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+  </div>
+</template>
+
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { VuePDF, usePDF } from "@tato30/vue-pdf";
 import { useRoute } from "vue-router";
 
@@ -7,17 +49,18 @@ const route = useRoute();
 const books = ref([]);
 const book = ref(null);
 const currentPage = ref(1);
-const totalPages = ref(100);
 
-// Charger le fichier PDF si disponible
+// Charger le fichier PDF dynamiquement
 const pdfUrl = ref("");
 const { pdf, pages } = usePDF(pdfUrl);
+
+const totalPages = pages;
 
 async function fetchBooks() {
   try {
     const response = await fetch("/books.json");
     books.value = await response.json();
-    book.value = books.value.find((b) => b.id == route.params.id);
+    book.value = books.value.find((b) => b.id == route.params.id) || null;
 
     if (book.value && book.value.pdf) {
       pdfUrl.value = book.value.pdf;
@@ -43,36 +86,3 @@ onMounted(() => {
   fetchBooks();
 });
 </script>
-
-<template>
-  <div class="flex flex-col items-center justify-center p-4">
-    <div v-if="book" class="max-w-md overflow-hidden">
-      <div class="p-4 flex flex-col items-center">
-        <img class="w-32 h-40 object-cover rounded" :src="book.image" alt="Book Cover" />
-        <h3 class="mt-2 text-lg font-semibold">{{ book.author }}</h3>
-        <h2 class="text-xl font-bold">{{ book.title }}</h2>
-      </div>
-
-      <!-- Affichage du PDF si disponible -->
-      <div v-if="book.pdf" class="w-full max-w-lg">
-        <h3 class="text-lg font-bold text-center mt-4">Lecture du PDF</h3>
-        <div v-for="page in pages" :key="page" class="border p-2 my-2">
-          <VuePDF :pdf="pdf" :page="page" />
-        </div>
-      </div>
-
-      <!-- Affichage du contenu texte sinon -->
-      <div v-else class="bg-gray-100 p-4 rounded-b-lg text-gray-700 text-sm overflow-y-auto h-48">
-        {{ book.content }}
-      </div>
-
-      <div class="p-4 flex justify-between items-center">
-        <button @click="prevPage" class="text-gray-700 font-bold">◀</button>
-        <span class="font-bold">{{ currentPage }}/{{ totalPages }}</span>
-        <button @click="nextPage" class="text-gray-700 font-bold">▶</button>
-      </div>
-    </div>
-
-    <p v-else>Chargement...</p>
-  </div>
-</template>
