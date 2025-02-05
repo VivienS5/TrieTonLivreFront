@@ -1,6 +1,9 @@
 @import './base.css';
 @import "tailwindcss";
 
+html{
+  background-color: rgb(198, 195, 199);
+}
 a,
 .green {
   text-decoration: none;
