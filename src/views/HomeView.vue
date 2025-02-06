@@ -1,12 +1,15 @@
 <template>
-  <div class="flex flex-col items-center justify-center">
-
+  <div>
     <!-- SearchBar début -->
-    <SearchBar @search="handleSearch" />
+    <div class="m-3">
+      <SearchBar @search="handleSearch" />
+    </div>
     <!-- SearchBar fin -->
 
     <!-- Les plus appréciés début -->
-    <PlusApprecies :books="books" :search="search" />
+    <div class="m-3">
+      <PlusApprecies :books="books" :search="search" />
+    </div>
     <!-- Les plus appréciés fin -->
   </div>
 </template>

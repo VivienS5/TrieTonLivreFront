@@ -1,7 +1,7 @@
 <template>
 <div class="p-4 flex flex-col lg:flex-row">
     <!-- Partie Infos du Livre -->
-    <div v-if="book" class="lg:w-1/3 flex flex-col items-center lg:items-start">
+    <div v-if="book" class="lg:w-1/3 flex flex-col items-center lg:items-start  font-curlz">
       <img class="w-40 h-56 object-cover rounded shadow-lg" :src="book.image" alt="Book Cover" />
       <h2 class="text-2xl font-bold mt-4 text-center lg:text-left">{{ book.title }}</h2>
       <h3 class="text-lg text-gray-700">{{ book.author }}</h3>
