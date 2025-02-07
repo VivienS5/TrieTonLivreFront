@@ -2,12 +2,12 @@
   <div>
     <h1 class="text-3xl font-semibold mt-4 font-curlz">Les plus appréciés</h1>
 
-    <!-- Résultats de recherche -->
+    <!-- Résultats des livres avec le mot 'solicitation' -->
     <div v-if="books.length" class="grid lg:grid-cols-4 lg:gap-4 grid-cols-2 gap-2">
       <div
         v-for="book in books"
         :key="book.id"
-        @click="goToBook(book.id)"
+        @click="goToBook(book)"
         class="flex items-center my-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg"
       >
         <img :src="book.image" alt="book cover" class="w-16 h-16 rounded object-cover" />
@@ -17,41 +17,51 @@
         </div>
       </div>
     </div>
-
-    <!-- Message si aucun résultat -->
-    <p v-else class="text-gray-500 mt-4">Aucun résultat pour le mot "solicitation".</p>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import axios from "axios"; 
 
 export default {
   data() {
     return {
-      books: [],
+      books: [], // Liste des livres à afficher
     };
   },
   methods: {
+    // Fonction pour récupérer les livres avec le mot 'solicitation'
     async fetchBooks() {
       try {
         const response = await axios.get(`http://localhost:8000/book/search?word=solicitation`);
+        console.log("Books:", response.data);
+
         this.books = response.data.map(book => ({
-          id: book.id,
+          id: book.ids,  // Utilisation de l'id de l'API
           title: book.title,
           author: book.author,
-          image: book.cover, // Assurez-vous que la propriété `cover` contient l'URL de l'image
+          image: book.cover,
         }));
+
       } catch (error) {
         console.error("Erreur API :", error);
       }
     },
-    goToBook(bookId) {
-      this.$router.push({ name: "lecture", params: { id: bookId } });
+    
+    // Fonction pour rediriger vers la page du livre sélectionné
+    goToBook(book) {
+      console.log("Livre sélectionné :", book);
+
+      if (book && book.id) {
+        this.$router.push({ name: "lecture", params: { id: book.id } });
+      } else {
+        console.error("Le livre n'a pas d'ID valide.");
+      }
     },
   },
+
   mounted() {
-    this.fetchBooks(); // Appel de la méthode pour charger les livres dès que le composant est monté
+    this.fetchBooks();
   },
 };
 </script>
