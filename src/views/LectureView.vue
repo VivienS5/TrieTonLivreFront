@@ -87,7 +87,7 @@ const fetchBook = async () => {
     book.value = {
       id: selectedBook.id,
       title: selectedBook.title,
-      author: selectedBook.author,
+      author: selectedBook.author.toString(),
       image: selectedBook.cover,
       linkToBook: selectedBook.linkToBook,
     };

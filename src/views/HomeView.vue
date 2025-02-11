@@ -58,7 +58,7 @@ export default {
         this.books = response.data.map(book => ({
           id: book.ids, 
           title: book.title,
-          author: book.author,
+          author: book.author.toString(),
           image: book.cover,
         }));
 
