@@ -13,11 +13,6 @@ const router = createRouter({
       name: 'lecture',
       component: () => import('../views/LectureView.vue'),
     },
-    {
-      path: '/recherche/:search',
-      name: 'recherche',
-      component: () => import('../views/RechercheView.vue'),
-    },
   ],
 })
 

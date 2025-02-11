@@ -2,7 +2,7 @@
   <div>
     <h1 class="text-3xl font-semibold mt-4 font-curlz">Les plus appréciés</h1>
 
-    <!-- Résultats des livres avec le mot 'solicitation' -->
+    <!-- Résultats des livres -->
     <div v-if="books.length" class="grid lg:grid-cols-4 lg:gap-4 grid-cols-2 gap-2">
       <div
         v-for="book in books"
@@ -26,18 +26,17 @@ import axios from "axios";
 export default {
   data() {
     return {
-      books: [], // Liste des livres à afficher
+      books: [],
     };
   },
   methods: {
-    // Fonction pour récupérer les livres avec le mot 'solicitation'
     async fetchBooks() {
       try {
         const response = await axios.get(`http://localhost:8000/book/search?word=solicitation`);
         console.log("Books:", response.data);
 
         this.books = response.data.map(book => ({
-          id: book.ids,  // Utilisation de l'id de l'API
+          id: book.ids,
           title: book.title,
           author: book.author,
           image: book.cover,
@@ -48,7 +47,6 @@ export default {
       }
     },
     
-    // Fonction pour rediriger vers la page du livre sélectionné
     goToBook(book) {
       console.log("Livre sélectionné :", book);
 
