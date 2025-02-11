@@ -6,7 +6,7 @@
 
       <!-- Résultats de recherche -->
       <div v-if="search !== ''">
-        <h2 class="text-3xl font-semibold mt-4 font-curlz">Résultat pour "{{ search }}"</h2>
+        <h2 class="text-3xl font-semibold mt-4 font-curlz bg-[#a9a9a9]">Résultat pour "{{ search }}"</h2>
         
         <div v-if="books.length" class="grid lg:grid-cols-4 lg:gap-4 grid-cols-2 gap-2">
           <div

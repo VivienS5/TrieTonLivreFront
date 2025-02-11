@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-3xl font-semibold mt-4 font-curlz">Les plus appréciés</h1>
+    <h1 class="text-3xl font-semibold mt-4 font-curlz bg-[#a9a9a9]">Les plus appréciés</h1>
 
     <!-- Résultats des livres -->
     <div v-if="books.length" class="grid lg:grid-cols-4 lg:gap-4 grid-cols-2 gap-2">
