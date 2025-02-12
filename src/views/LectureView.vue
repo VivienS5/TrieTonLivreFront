@@ -57,8 +57,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'; // Ajout de `computed`
-import axios from 'axios'; // Importation d'axios
+import { ref, onMounted, computed } from 'vue';
+import axios from 'axios';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
@@ -66,10 +66,8 @@ const book = ref(null);
 const bookText = ref([]);
 const currentChapter = ref(1);
 
-// Référence du conteneur du livre
 const bookContainer = ref(null);
 
-// Découper le texte par chapitres en utilisant le mot-clé "CHAPTER"
 const currentChapterText = computed(() => {
   return bookText.value[currentChapter.value - 1] || '';
 });
@@ -104,18 +102,18 @@ const fetchBookText = async (url) => {
       `http://localhost:8000/book/proxy-book/`,
       { params: { url } }
     );
-    // Utilisation d'une expression régulière pour découper par "CHAPTER"
     const content = response.data.content.split(/(?=CHAPTER)/); // Découpe à chaque occurrence de "CHAPTER"
+
+    // const content = response.data.content.split(/(?=^.*\bchapters?\b.*$)/gim);
     bookText.value = content;
   } catch (error) {
     console.error('Erreur lors du chargement du texte :', error);
   }
 };
 
-// Fonction de scroll vers le haut du conteneur du livre
 const scrollToTop = () => {
   if (bookContainer.value) {
-    bookContainer.value.scrollTop = 0; // Scroll vers le haut du conteneur
+    bookContainer.value.scrollTop = 0;
   }
 };
 
@@ -123,14 +121,14 @@ const scrollToTop = () => {
 const nextChapter = () => {
   if (currentChapter.value < totalChapters.value) {
     currentChapter.value++;
-    scrollToTop(); // Scroll vers le haut après le changement de chapitre
+    scrollToTop();
   }
 };
 
 const prevChapter = () => {
   if (currentChapter.value > 1) {
     currentChapter.value--;
-    scrollToTop(); // Scroll vers le haut après le changement de chapitre
+    scrollToTop();
   }
 };
 

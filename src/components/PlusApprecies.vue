@@ -48,9 +48,9 @@ export default {
   data() {
     return {
       books: [],
-      page: 1,       // Page actuelle
-      limit: 8,     // Nombre de livres par page
-      totalPages: 1, // Nombre total de pages (calculé depuis l'API)
+      page: 1,
+      limit: 8,
+      totalPages: 1,
     };
   },
   methods: {
@@ -73,7 +73,6 @@ export default {
           image: book.cover,
         }));
 
-        // Mise à jour du nombre total de pages
         this.totalPages = Math.ceil(response.data.count / this.limit);
 
       } catch (error) {
