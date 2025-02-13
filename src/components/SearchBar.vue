@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center">
-    <div class="max-w-lg w-full p-6 bg-white shadow-lg rounded-lg">
-      <form @submit.prevent="emitSearch" class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+    <div class="max-w-lg w-full p-6">
+      <form @submit.prevent="emitSearch" class="flex items-center border border-gray-300 rounded-lg overflow-hidden bg-white shadow-lg">
         <input
           v-model="searchQuery"
           type="text"

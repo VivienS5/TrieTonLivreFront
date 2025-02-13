@@ -17,36 +17,69 @@
         </div>
       </div>
     </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center items-center mt-4 space-x-4">
+      <button 
+        @click="prevPage" 
+        :disabled="page <= 1" 
+        class="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+      >
+        Précédent
+      </button>
+      
+      <span>Page {{ page }} / {{ totalPages }}</span>
+
+      <button 
+        @click="nextPage" 
+        :disabled="page >= totalPages" 
+        class="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+      >
+        Suivant
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
-import axios from "axios"; 
+import axios from "axios";
 
 export default {
   data() {
     return {
       books: [],
+      page: 1,
+      limit: 8,
+      totalPages: 1,
     };
   },
   methods: {
     async fetchBooks() {
       try {
-        const response = await axios.get(`http://localhost:8000/book/search?word=solicitation`);
+        const response = await axios.get(`http://localhost:8000/book/search`, {
+          params: {
+            word: "solicitation",
+            page: this.page,
+            limit: this.limit,
+          },
+        });
+
         console.log("Books:", response.data);
 
-        this.books = response.data.map(book => ({
+        this.books = response.data.results.map(book => ({
           id: book.ids,
           title: book.title,
-          author: book.author,
+          author: book.author.toString(),
           image: book.cover,
         }));
+
+        this.totalPages = Math.ceil(response.data.count / this.limit);
 
       } catch (error) {
         console.error("Erreur API :", error);
       }
     },
-    
+
     goToBook(book) {
       console.log("Livre sélectionné :", book);
 
@@ -56,6 +89,20 @@ export default {
         console.error("Le livre n'a pas d'ID valide.");
       }
     },
+
+    nextPage() {
+      if (this.page < this.totalPages) {
+        this.page++;
+        this.fetchBooks();
+      }
+    },
+
+    prevPage() {
+      if (this.page > 1) {
+        this.page--;
+        this.fetchBooks();
+      }
+    }
   },
 
   mounted() {
