@@ -112,6 +112,7 @@ export default {
             author: book.author.map(a => a.name).join(", "),
             image: book.cover,
           }));
+          console.log("recherche:", response.data);
 
           this.totalPages = Math.ceil(response.data.count / this.limit);
         } else {

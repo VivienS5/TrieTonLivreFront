@@ -30,10 +30,10 @@
     </div>
 
     <!-- Résultats des livres -->
-    <div v-if="!isLoading && books.length && !apiError" class="grid lg:grid-cols-4 lg:gap-4 grid-cols-2 gap-2">
+    <div v-if="!isLoading && books.length" class="grid lg:grid-cols-4 lg:gap-4 grid-cols-2 gap-2">
       <div
         v-for="book in books"
-        :key="book.id"
+        :key="book.idGutendex"
         @click="goToBook(book)"
         class="flex items-center my-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg"
       >
@@ -81,28 +81,26 @@ export default {
       limit: 8,
       totalPages: 1,
       isLoading: false,
-      apiError: false, // Gestion des erreurs API
+      apiError: false,
     };
   },
   methods: {
     async fetchBooks() {
       this.isLoading = true;
-      this.apiError = false; // Réinitialisation de l'erreur avant l'appel API
+      this.apiError = false; 
 
       try {
-        const response = await axios.get(`http://localhost:8000/book/search`, {
+        const response = await axios.get(`http://localhost:8000/book/`, {
           params: {
-            word: "solicitation",
             page: this.page,
-            limit: this.limit,
           },
         });
 
-        console.log("Books:", response.data);
+        console.log("biblio:", response.data);
 
         if (response.data.results) {
           this.books = response.data.results.map(book => ({
-            id: book.id || book.ids,
+            id: book.id || book.ids ,
             title: book.title,
             author: book.author.map(a => a.name).join(", "),
             image: book.cover,
