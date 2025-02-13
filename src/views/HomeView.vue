@@ -1,24 +1,27 @@
 <template>
   <div>
+
     <!-- SearchBar -->
     <div class="m-3">
-      <SearchBar @search="handleSearch" />
+      <SearchBar @search="handleSearch" /> <!-- Écoute l'événement search -->
 
-      <!-- Résultats de recherche -->
       <div v-if="search !== ''">
         <h2 class="text-3xl font-semibold mt-4 font-curlz bg-[#a9a9a9]">
           Résultat pour "{{ search }}"
         </h2>
 
         <!-- Message d'erreur si l'API ne répond pas -->
+
         <p v-if="apiError" class="text-red-600 font-semibold mt-2">
           *Erreur, une erreur s'est produite. Veuillez réessayer plus tard.*
         </p>
+
 
         <!-- Message si aucun livre n'est trouvé -->
         <p v-if="!isLoading && !books.length && !apiError" class="text-gray-500 mt-2">
           Aucun livre trouvé pour cette recherche.
         </p>
+
 
         <!-- Loader pendant le chargement -->
         <div v-if="isLoading" class="grid lg:grid-cols-4 lg:gap-4 grid-cols-2 gap-2 m-1">
@@ -36,6 +39,7 @@
             </ContentLoader>
           </div>
         </div>
+
 
         <!-- Liste des livres -->
         <div v-if="!isLoading && books.length && !apiError" class="grid lg:grid-cols-4 lg:gap-4 grid-cols-2 gap-2">
@@ -95,10 +99,10 @@ export default {
     return {
       search: "",
       books: [],
-      page: 1, 
+      page: 1,
       limit: 8,
       isLoading: false, 
-      apiError: false, // Pour détecter les erreurs API
+      apiError: false,
     };
   },
   methods: {
@@ -106,13 +110,12 @@ export default {
       if (!this.search) return;
 
       this.isLoading = true;
-      this.apiError = false; // Réinitialise l'erreur avant chaque appel API
+      this.apiError = false;
 
       try {
         const response = await axios.get(
           `http://localhost:8000/book/search?word=${this.search}&page=${this.page}&limit=${this.limit}`
         );
-
         console.log("Books:", response.data);
 
         if (response.data.results) {
@@ -136,7 +139,7 @@ export default {
         this.isLoading = false;
       }
     },
-    
+
     handleSearch(query) {
       this.search = query;
       this.page = 1;
