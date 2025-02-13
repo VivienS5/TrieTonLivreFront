@@ -1,26 +1,21 @@
 <template>
   <div>
-    <!-- SearchBar -->
     <div class="m-3">
-      <SearchBar @search="handleSearch" />
+      <SearchBar @search="handleSearch" /> <!-- Écoute l'événement search -->
 
-      <!-- Résultats de recherche -->
       <div v-if="search !== ''">
         <h2 class="text-3xl font-semibold mt-4 font-curlz bg-[#a9a9a9]">
           Résultat pour "{{ search }}"
         </h2>
 
-        <!-- Message d'erreur si l'API ne répond pas -->
         <p v-if="apiError" class="text-red-600 font-semibold mt-2">
           *Erreur, une erreur s'est produite. Veuillez réessayer plus tard.*
         </p>
 
-        <!-- Message si aucun livre n'est trouvé -->
         <p v-if="!isLoading && !books.length && !apiError" class="text-gray-500 mt-2">
           Aucun livre trouvé pour cette recherche.
         </p>
 
-        <!-- Loader pendant le chargement -->
         <div v-if="isLoading" class="grid lg:grid-cols-4 lg:gap-4 grid-cols-2 gap-2 m-1">
           <div v-for="n in 8" :key="n" class="p-4 bg-gray-200 rounded-lg">
             <ContentLoader 
@@ -37,7 +32,6 @@
           </div>
         </div>
 
-        <!-- Liste des livres -->
         <div v-if="!isLoading && books.length && !apiError" class="grid lg:grid-cols-4 lg:gap-4 grid-cols-2 gap-2">
           <div
             v-for="book in books"
@@ -53,7 +47,6 @@
           </div>
         </div>
 
-        <!-- Pagination -->
         <div v-if="!isLoading && books.length && totalPages >= 2 && !apiError" class="flex justify-center items-center mt-4 space-x-4">
           <button 
             @click="prevPage" 
@@ -76,7 +69,6 @@
       </div>
     </div>
 
-    <!-- Les plus appréciés -->
     <div class="m-3">
       <PlusApprecies :books="books" :search="search" />
     </div>
@@ -95,10 +87,10 @@ export default {
     return {
       search: "",
       books: [],
-      page: 1, 
+      page: 1,
       limit: 8,
-      isLoading: false, 
-      apiError: false, // Pour détecter les erreurs API
+      isLoading: false,
+      apiError: false,
     };
   },
   methods: {
@@ -106,37 +98,34 @@ export default {
       if (!this.search) return;
 
       this.isLoading = true;
-      this.apiError = false; // Réinitialise l'erreur avant chaque appel API
+      this.apiError = false;
 
       try {
         const response = await axios.get(
           `http://localhost:8000/book/search?word=${this.search}&page=${this.page}&limit=${this.limit}`
         );
-
-        console.log("Books:", response.data);
-
+        
         if (response.data.results) {
           this.books = response.data.results.map(book => ({
-            id: book.id || book.ids, 
+            id: book.id || book.ids,
             title: book.title,
             author: book.author.map(a => a.name).join(", "),
             image: book.cover,
           }));
 
           this.totalPages = Math.ceil(response.data.count / this.limit);
-          console.log("Total pages:", this.totalPages);
         } else {
-          this.books = []; // Aucun livre trouvé
+          this.books = [];
         }
       } catch (error) {
         console.error("Erreur API :", error);
-        this.apiError = true; // Déclenche le message d'erreur
+        this.apiError = true;
         this.books = [];
       } finally {
         this.isLoading = false;
       }
     },
-    
+
     handleSearch(query) {
       this.search = query;
       this.page = 1;

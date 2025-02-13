@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-3xl font-semibold mt-4 font-curlz bg-[#a9a9a9]">Les plus appréciés</h1>
+    <h1 class="text-3xl font-semibold mt-4 font-curlz bg-[#a9a9a9]">Bibliothèque</h1>
 
     <!-- Message d'erreur si l'API ne répond pas -->
     <p v-if="apiError" class="text-red-600 font-semibold mt-2">
