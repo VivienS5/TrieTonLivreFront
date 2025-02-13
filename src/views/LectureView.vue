@@ -18,6 +18,10 @@
 
     <!-- Partie Texte -->
     <div class="lg:w-3/5 overflow-hidden">
+      <div v-if="isLoading" class="flex justify-center items-center h-40">
+        <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
+      </div>
+      
       <!-- Empêche le scroll global de la page -->
       <div
         v-if="bookText.length"
@@ -65,6 +69,7 @@ const route = useRoute();
 const book = ref(null);
 const bookText = ref([]);
 const currentChapter = ref(1);
+const isLoading = ref(true);
 
 const bookContainer = ref(null);
 
@@ -76,6 +81,7 @@ const totalChapters = computed(() => bookText.value.length);
 
 const fetchBook = async () => {
   try {
+    isLoading.value = true;
     const bookId = route.params.id;
     const response = await axios.get(
       `http://localhost:8000/book/${bookId}/`
@@ -91,9 +97,11 @@ const fetchBook = async () => {
     };
     console.log("reponse:", response.data);
 
-    fetchBookText(selectedBook.linkToBook);
+    await fetchBookText(selectedBook.linkToBook);
   } catch (error) {
     console.error('Erreur lors du chargement du livre :', error);
+  } finally {
+    isLoading.value = false;
   }
 };
 
