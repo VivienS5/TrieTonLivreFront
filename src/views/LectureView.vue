@@ -85,10 +85,11 @@ const fetchBook = async () => {
     book.value = {
       id: selectedBook.id,
       title: selectedBook.title,
-      author: selectedBook.author.toString(),
+      author: selectedBook.author.map(a => a.name).join(", "),
       image: selectedBook.cover,
       linkToBook: selectedBook.linkToBook,
     };
+    console.log("reponse:", response.data);
 
     fetchBookText(selectedBook.linkToBook);
   } catch (error) {
